@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Models;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace TaskManagement.Controllers
 {
@@ -99,9 +100,9 @@ namespace TaskManagement.Controllers
                                      autoDelete: false,
                                      arguments: null);
 
-                string message = task.taskDescription;
+              
+                var message = JsonConvert.SerializeObject(task);
                 var body = Encoding.UTF8.GetBytes(message);
-
                 channel.BasicPublish(exchange: "",
                                      routingKey: "tasks",
                                      basicProperties: null,
