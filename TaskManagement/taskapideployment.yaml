@@ -1,0 +1,50 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasksapi
+spec:
+  selector:
+    matchLabels:
+      app: tasksapi
+  template:
+    metadata:
+      labels:
+        app: tasksapi
+    spec:
+      containers:
+      - name: tasksapi
+        image: wanfangyuan19890223/tasksapi
+        # env:
+        # - name: DbServer
+        #   value: "db-mssql"
+        # - name: DbPort
+        #   value: "1433"
+        # - name: DbUser
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mssql-creds
+        #       key: username          
+        # - name: Password
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mssql-creds
+        #       key: password
+        # - name: Database
+        #   value: "EMSdb"
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasksapi
+spec:
+  type: NodePort
+  selector:
+    app: tasksapi
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31701
