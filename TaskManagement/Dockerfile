@@ -1,15 +1,23 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS base
 WORKDIR /app
 EXPOSE 80
+ENV RABBITMQ_HOST localhost
+ENV RABBITMQ_PORT 5672 
+ENV ASPNETCORE_URLS=http://+:5000
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 WORKDIR /src
-COPY ["TaskManagement/TaskManagement.csproj", "TaskManagement/"]
-RUN dotnet restore "TaskManagement/TaskManagement.csproj"
+COPY ["TaskManagement.csproj", "./"]
+RUN dotnet restore "TaskManagement.csproj"
 COPY . .
-WORKDIR "/src/TaskManagement"
+WORKDIR "/src/."
 RUN dotnet build "TaskManagement.csproj" -c Release -o /app/build
 
 FROM build AS publish
