@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using TaskManagement.Models;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace TaskManagement.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -24,6 +26,7 @@ namespace TaskManagement.Controllers
         }
 
         // GET: api/Task
+        [EnableCors("MyPolicy")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<task>>> GetTasks()
         {
@@ -31,6 +34,7 @@ namespace TaskManagement.Controllers
         }
 
         // GET: api/Task/5
+        [EnableCors("MyPolicy")]
         [HttpGet("{id}")]
         public async Task<ActionResult<task>> Gettask(int id)
         {
@@ -46,6 +50,7 @@ namespace TaskManagement.Controllers
 
         // PUT: api/Task/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [EnableCors("MyPolicy")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Puttask(int id, task task)
         {
@@ -77,6 +82,7 @@ namespace TaskManagement.Controllers
 
         // POST: api/Task
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [EnableCors("MyPolicy")]
         [HttpPost]
         public async Task<ActionResult<task>> Posttask(task task)
         {
@@ -113,6 +119,7 @@ namespace TaskManagement.Controllers
         }
 
         // DELETE: api/Task/5
+        [EnableCors("MyPolicy")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletetask(int id)
         {

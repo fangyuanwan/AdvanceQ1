@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: taskapi
-        image: wanfangyuan19890223/tasksapi
+        image: wanfangyuan19890223/tasksapi:2.0.0
         resources:
           limits: 
             memory: "1024Mi"
